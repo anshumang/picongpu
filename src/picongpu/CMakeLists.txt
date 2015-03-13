@@ -268,6 +268,13 @@ if( (Boost_VERSION EQUAL 105500) AND
       "${CUDA_NVCC_FLAGS} \"-DBOOST_NOINLINE=__attribute__((noinline))\" ")
 endif()
 
+################################################################################
+# Find Protobuf
+################################################################################
+
+include(FindProtobuf)
+find_package(Protobuf REQUIRED)
+include_directories(${PROTOBUF_INCLUDE_DIR})
 
 ################################################################################
 # PMacc options
@@ -467,7 +474,7 @@ cuda_add_executable(picongpu
     ${SCOREP_SRCFILES}
 )
 
-target_link_libraries(picongpu  ${LIBS} ${CUDA_CUDART_LIBRARY} z m)
+target_link_libraries(picongpu  ${LIBS} ${CUDA_CUDART_LIBRARY} z m ${PROTOBUF_LIBRARY})
 
 if(SCOREP_ENABLE)
     # Score-P libraries must be linked after the object to prevent symbols
