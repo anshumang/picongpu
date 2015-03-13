@@ -35,6 +35,71 @@ using namespace PMacc;
 class PROTOBUFWriter : public ILightweightPlugin
 {
 
+public:
+
+    PROTOBUFWriter() :
+    notifyPeriod(0)
+    {
+        Environment<>::get().PluginConnector().registerPlugin(this);
+    }
+
+    virtual ~PROTOBUFWriter()
+    {
+
+    }
+
+    void pluginRegisterHelp(po::options_description& desc)
+    {
+        desc.add_options()
+            ("protobuf.period", po::value<uint32_t > (&notifyPeriod)->default_value(0),
+             "enable PROTOBUF IO [for each n-th step]");
+    }
+
+    std::string pluginGetName() const
+    {
+        return "PROTOBUFWriter";
+    }
+
+    __host__ void notify(uint32_t currentStep)
+    {
+        notificationReceived(currentStep, false);
+    }
+
+private:
+
+    /**
+     * Notification for dump or checkpoint received
+     *
+     * @param currentStep current simulation step
+     * @param isCheckpoint checkpoint notification
+     */
+    void notificationReceived(uint32_t currentStep, bool isCheckpoint)
+    {
+        writeProtobuf((void*) &mThreadParams);
+    }
+
+    void pluginLoad()
+    {
+        if (notifyPeriod > 0)
+        {
+            Environment<>::get().PluginConnector().setNotificationPeriod(this, notifyPeriod);
+        }
+
+        loaded = true;
+    }
+
+    void pluginUnload()
+    {
+
+    }
+
+    static void *writeProtobuf(void *p_args)
+    {
+
+        return NULL;
+    }
+
+    uint32_t notifyPeriod;
 };
 
 } //namespace protobuf
