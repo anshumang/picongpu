@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "plugins/protobuf/PROTOBUFWriter.def"
+
 namespace picongpu
 {
 
@@ -98,6 +100,8 @@ private:
 
         return NULL;
     }
+
+    ThreadParams mThreadParams;
 
     uint32_t notifyPeriod;
 };

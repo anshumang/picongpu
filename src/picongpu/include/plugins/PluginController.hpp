@@ -93,6 +93,11 @@
 #include "plugins/adios/ADIOSWriter.hpp"
 #endif
 
+#define ENABLE_PROTOBUF 1 //Force enabled for debugging
+#if (ENABLE_PROTOBUF == 1)
+#include "plugins/protobuf/PROTOBUFWriter.hpp"
+#endif
+
 namespace picongpu
 {
 
